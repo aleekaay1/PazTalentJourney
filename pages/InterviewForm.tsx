@@ -519,19 +519,21 @@ const InterviewForm: React.FC = () => {
           </form>
         )}
 
-        <div className={`border-t border-gray-200 pt-6 ${!preSubmitted ? 'opacity-60 pointer-events-none' : ''}`}>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Post-Interview Confirmation</h2>
-          {preSubmitted && !postInterviewUnlocked && (
-            <div className="mb-4 p-4 rounded-lg bg-amber-50 border border-amber-200">
-              <p className="text-sm text-amber-800">Once you are done with your initial interview, fill out the form below.</p>
-              <Button type="button" className="mt-3" onClick={() => setPostInterviewUnlocked(true)}>
-                I have completed my interview
-              </Button>
-            </div>
-          )}
+        {/* Only show post-interview section if it hasn't been completed yet */}
+        {!candidate?.postInterview && (
+          <div className={`border-t border-gray-200 pt-6 ${!preSubmitted ? 'opacity-60 pointer-events-none' : ''}`}>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Post-Interview Confirmation</h2>
+            {preSubmitted && !postInterviewUnlocked && (
+              <div className="mb-4 p-4 rounded-lg bg-amber-50 border border-amber-200">
+                <p className="text-sm text-amber-800">Once you are done with your initial interview, fill out the form below.</p>
+                <Button type="button" className="mt-3" onClick={() => setPostInterviewUnlocked(true)}>
+                  I have completed my interview
+                </Button>
+              </div>
+            )}
 
-          {preSubmitted && (postInterviewUnlocked || candidate?.postInterview) && (
-            <form onSubmit={handlePostSubmit} className="space-y-4">
+            {preSubmitted && postInterviewUnlocked && (
+              <form onSubmit={handlePostSubmit} className="space-y-4">
               <div>
                 <p className="text-sm font-medium text-gray-700 mb-2">Has your initial interview been completed by a member of the Management Team? *</p>
                 <div className="flex gap-6">
@@ -558,9 +560,10 @@ const InterviewForm: React.FC = () => {
                 {errors.ceoInvite && <p className="text-xs text-red-600 mt-1">{errors.ceoInvite}</p>}
               </div>
               <Button type="submit" fullWidth disabled={submittingPost}>{submittingPost ? 'Submitting...' : 'Submit post-interview'}</Button>
-            </form>
-          )}
-        </div>
+              </form>
+            )}
+          </div>
+        )}
       </div>
     </Layout>
   );
