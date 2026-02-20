@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children, hideHeader = false, isAdmin =
           <div className={`mx-auto px-4 py-2 sm:py-3 flex items-center justify-between gap-2 min-h-[52px] sm:min-h-0 ${isAdmin ? 'max-w-7xl' : 'max-w-4xl'}`}>
             <div className="flex items-center min-w-0 flex-1">
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Globe Life AIL Division - Paz Organization"
                 className="h-9 sm:h-10 w-auto max-w-full object-contain object-left"
                 onError={(e) => {

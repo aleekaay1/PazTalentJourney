@@ -14,7 +14,7 @@ const Landing: React.FC = () => {
           <div className="space-y-3 sm:space-y-4">
             <div className="flex justify-center mb-3 sm:mb-4 px-2">
               <img
-                src="/header.svg"
+                src="/header.PNG"
                 alt="Globe Life AIL Division - Paz Organization"
                 className="w-full max-w-md h-auto object-contain"
                 onError={(e) => {
