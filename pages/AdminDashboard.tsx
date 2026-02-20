@@ -876,6 +876,33 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 )}
 
+                {/* Post Live Career Overview Exit Questionnaire */}
+                {selectedCandidate.exitQuestionnaire && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-bold border-b pb-2">Post Live Career Overview Exit Questionnaire</h3>
+                    <p className="text-xs text-gray-500">
+                      Submitted {new Date(selectedCandidate.exitQuestionnaire.submittedAt).toLocaleString()}
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                      <div><p className="text-gray-500">First Name</p><p className="text-gray-800 font-medium">{selectedCandidate.exitQuestionnaire.firstName}</p></div>
+                      <div><p className="text-gray-500">Last Name</p><p className="text-gray-800 font-medium">{selectedCandidate.exitQuestionnaire.lastName}</p></div>
+                      <div><p className="text-gray-500">Email</p><p className="text-gray-800">{selectedCandidate.exitQuestionnaire.email}</p></div>
+                      <div><p className="text-gray-500">Phone</p><p className="text-gray-800">{selectedCandidate.exitQuestionnaire.phone}</p></div>
+                      <div className="sm:col-span-2"><p className="text-gray-500">What stood out most</p><p className="text-gray-800">{selectedCandidate.exitQuestionnaire.whatStoodOut}</p></div>
+                      <div className="sm:col-span-2"><p className="text-gray-500">Why good fit</p><p className="text-gray-800">{selectedCandidate.exitQuestionnaire.whyGoodFit}</p></div>
+                      <div><p className="text-gray-500">Financial investment for license ($348)</p><p className="font-medium capitalize">{selectedCandidate.exitQuestionnaire.financialInvestmentLicense}</p></div>
+                      <div><p className="text-gray-500">Legally entitled to work in Canada (full-time)</p><p className="font-medium capitalize">{selectedCandidate.exitQuestionnaire.legallyEntitledCanadaFullTime}</p></div>
+                      <div><p className="text-gray-500">Comfortable 100% virtual</p><p className="font-medium uppercase">{selectedCandidate.exitQuestionnaire.comfortableVirtualEnvironment}</p></div>
+                      <div><p className="text-gray-500">Excited about off-site social</p><p className="font-medium capitalize">{selectedCandidate.exitQuestionnaire.excitedOffSiteSocial}</p></div>
+                      <div><p className="text-gray-500">Position interest</p><p className="font-medium">{selectedCandidate.exitQuestionnaire.positionInterest}</p></div>
+                      <div><p className="text-gray-500">Contact permission</p><p className="font-medium capitalize">{selectedCandidate.exitQuestionnaire.contactPermission}</p></div>
+                    </div>
+                    {selectedCandidate.exitQuestionnaire.questionsAboutOpportunity && (
+                      <div><p className="text-gray-500 text-sm">Questions about opportunity</p><p className="text-gray-800 text-sm">{selectedCandidate.exitQuestionnaire.questionsAboutOpportunity}</p></div>
+                    )}
+                  </div>
+                )}
+
                 {/* Assessment Data */}
                 {selectedCandidate.assessment ? (
                   <div className="space-y-6">

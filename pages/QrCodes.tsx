@@ -65,6 +65,14 @@ const QrCodes: React.FC = () => {
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
   const arrivalUrl = `${origin}/interview`;
   const assessmentUrl = `${origin}/assessment-lookup`;
+  const exitQuestionnaireUrl = `${origin}/exit-questionnaire`;
+  const [exitLinkCopied, setExitLinkCopied] = React.useState(false);
+  const copyExitLink = useCallback(() => {
+    navigator.clipboard.writeText(exitQuestionnaireUrl).then(() => {
+      setExitLinkCopied(true);
+      setTimeout(() => setExitLinkCopied(false), 2000);
+    });
+  }, [exitQuestionnaireUrl]);
 
   const downloadArrivalPdf = useCallback(() => {
     openPrintView({
@@ -118,12 +126,24 @@ const QrCodes: React.FC = () => {
               Download PDF (branded, print-ready)
             </Button>
           </Card>
+
+          <Card className="flex flex-col items-center text-center space-y-4">
+            <h2 className="font-semibold text-gray-900">3. Post Live Career Overview Exit Questionnaire</h2>
+            <p className="text-xs text-gray-500">Email this link to candidates after the live session so they can complete the exit questionnaire.</p>
+            <div className="bg-white p-4 rounded-xl border">
+              <QRCode value={exitQuestionnaireUrl} size={180} />
+            </div>
+            <p className="text-[11px] text-gray-400 break-all">{exitQuestionnaireUrl}</p>
+            <Button variant="outline" onClick={copyExitLink} className="w-full">
+              {exitLinkCopied ? 'Copied to clipboard' : 'Copy link (for email)'}
+            </Button>
+          </Card>
         </div>
 
         <div className="text-xs text-gray-500 border-t border-gray-100 pt-4">
-          <p className="font-medium text-gray-700 mb-1">Two-QR flow</p>
+          <p className="font-medium text-gray-700 mb-1">QR & links</p>
           <p>
-            <strong>QR 1</strong>: Applicant Questionnaire at arrival. <strong>QR 2</strong>: After the overview, candidates scan and enter their email to confirm post-overview questions and complete the Leadership & Career Assessment if invited.
+            <strong>QR 1</strong>: Applicant Questionnaire at arrival. <strong>QR 2</strong>: After the overview, candidates scan and enter their email to confirm post-overview questions and complete the Leadership & Career Assessment if invited. <strong>QR 3 / Exit link</strong>: Post Live Career Overview Exit Questionnaire — copy the link and email it to candidates to fill out after the live session.
           </p>
         </div>
       </div>

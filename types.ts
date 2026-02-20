@@ -19,6 +19,24 @@ export interface ApplicantQuestionnaire {
   contactPermission?: 'yes' | 'no';
 }
 
+/** Post Live Career Overview Exit Questionnaire (link sent to candidate after live session) */
+export interface PostLiveExitQuestionnaire {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  whatStoodOut: string;
+  whyGoodFit: string;
+  financialInvestmentLicense: 'yes' | 'no';
+  legallyEntitledCanadaFullTime: 'yes' | 'no';
+  comfortableVirtualEnvironment: 'yes' | 'no';
+  excitedOffSiteSocial: 'yes' | 'no' | 'maybe';
+  positionInterest: string;
+  questionsAboutOpportunity: string;
+  contactPermission: 'yes' | 'no';
+  submittedAt: string; // ISO timestamp
+}
+
 export const RECEPTION_BACKGROUND_AREAS = [
   'Sales',
   'Customer Service',
@@ -120,6 +138,8 @@ export interface Candidate {
   assessment?: AssessmentData;
   score?: number;
   fitCategory?: 'High Fit' | 'Review' | 'Not Aligned';
+  /** Post Live Career Overview Exit Questionnaire (filled via emailed link) */
+  exitQuestionnaire?: PostLiveExitQuestionnaire;
 }
 
 export interface AssessmentData {

@@ -1,4 +1,4 @@
-import { Candidate, AssessmentData, ApplicantQuestionnaire, AdminData, DEFAULT_ADMIN_DATA } from '../types';
+import { Candidate, AssessmentData, ApplicantQuestionnaire, AdminData, DEFAULT_ADMIN_DATA, PostLiveExitQuestionnaire } from '../types';
 import { supabase } from './supabaseClient';
 
 const TABLE_NAME = 'candidates';
@@ -21,6 +21,7 @@ type CandidateRow = {
   assessment: AssessmentData | null;
   score: number | null;
   fit_category: Candidate['fitCategory'] | null;
+  exit_questionnaire: PostLiveExitQuestionnaire | null;
 };
 
 const fromRow = (row: CandidateRow): Candidate => ({
@@ -38,6 +39,7 @@ const fromRow = (row: CandidateRow): Candidate => ({
   assessment: row.assessment || undefined,
   score: row.score ?? undefined,
   fitCategory: row.fit_category ?? undefined,
+  exitQuestionnaire: row.exit_questionnaire ?? undefined,
 });
 
 const toRow = (candidate: Candidate): CandidateRow => ({
@@ -55,6 +57,7 @@ const toRow = (candidate: Candidate): CandidateRow => ({
   assessment: candidate.assessment ?? null,
   score: candidate.score ?? null,
   fit_category: candidate.fitCategory ?? null,
+  exit_questionnaire: candidate.exitQuestionnaire ?? null,
 });
 
 // --- Public API used by components (now async + Supabase-backed) ---
@@ -137,6 +140,7 @@ export const createCandidate = async (initialData: Partial<Candidate>): Promise<
     timestamp: new Date().toISOString(),
     status: 'new',
     applicantQuestionnaire: initialData.applicantQuestionnaire,
+    exitQuestionnaire: initialData.exitQuestionnaire,
   };
 
   const row = toRow(newCandidate);
