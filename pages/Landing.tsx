@@ -14,9 +14,13 @@ const Landing: React.FC = () => {
           <div className="space-y-3 sm:space-y-4">
             <div className="flex justify-center mb-3 sm:mb-4 px-2">
               <img
-                src="/header.png"
+                src="/header.svg"
                 alt="Globe Life AIL Division - Paz Organization"
                 className="w-full max-w-md h-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
               />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-[#005EB8]">Welcome</h2>

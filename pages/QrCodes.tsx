@@ -14,7 +14,7 @@ const openPrintView = (options: {
 }) => {
   QRCodeLib.toDataURL(options.url, { width: 280, margin: 1 }).then((dataUrl) => {
       const origin = typeof window !== 'undefined' ? window.location.origin : '';
-      const headerUrl = `${origin}/header.png`;
+      const headerUrl = `${origin}/header.svg`;
       const win = window.open('', '_blank');
       if (!win) return;
       win.document.write(`

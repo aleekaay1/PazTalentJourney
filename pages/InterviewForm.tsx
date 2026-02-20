@@ -318,7 +318,10 @@ const InterviewForm: React.FC = () => {
     <Layout>
       <div className="flex-grow flex flex-col p-4 sm:p-6 max-w-lg mx-auto w-full pb-24">
         <div className="flex justify-center mb-4">
-          <img src="/header.png" alt="Globe Life AIL Division" className="w-full max-w-md h-auto object-contain" />
+          <img src="/header.svg" alt="Globe Life AIL Division" className="w-full max-w-md h-auto object-contain" onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }} />
         </div>
 
         <p className="text-sm text-gray-600 mb-4">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import InterviewForm from './pages/InterviewForm';
 import PostInterview from './pages/PostInterview';
@@ -15,7 +15,7 @@ import CheckStatus from './pages/CheckStatus';
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/interview" element={<InterviewForm />} />
@@ -31,7 +31,7 @@ const App: React.FC = () => {
         <Route path="/qr" element={<QrCodes />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
