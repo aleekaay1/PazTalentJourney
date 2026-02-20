@@ -17,6 +17,9 @@ const CONTACT_PERMISSION_OPTIONS = [
 
 const ExitQuestionnaireForm: React.FC = () => {
   const navigate = useNavigate();
+  const [loadEmail, setLoadEmail] = useState('');
+  const [loadLookupError, setLoadLookupError] = useState('');
+  const [lookupLoading, setLookupLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -40,6 +43,49 @@ const ExitQuestionnaireForm: React.FC = () => {
   const update = (key: keyof typeof form, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
     if (errors[key]) setErrors(prev => ({ ...prev, [key]: '' }));
+  };
+
+  const handleLoadByEmail = async () => {
+    const email = loadEmail.trim().toLowerCase();
+    if (!email) {
+      setLoadLookupError('Please enter your email.');
+      return;
+    }
+    setLoadLookupError('');
+    setLookupLoading(true);
+    try {
+      const c = await getCandidateByEmail(email);
+      if (!c) {
+        setLoadLookupError('No record found for this email. You can still fill out the form below.');
+        setLookupLoading(false);
+        return;
+      }
+      const eq = c.exitQuestionnaire;
+      setForm(prev => ({
+        ...prev,
+        firstName: c.firstName || prev.firstName,
+        lastName: c.lastName || prev.lastName,
+        email: c.email || prev.email,
+        verifyEmail: c.email || prev.verifyEmail,
+        phone: c.phone || prev.phone,
+        ...(eq ? {
+          whatStoodOut: eq.whatStoodOut || prev.whatStoodOut,
+          whyGoodFit: eq.whyGoodFit || prev.whyGoodFit,
+          financialInvestmentLicense: eq.financialInvestmentLicense || prev.financialInvestmentLicense,
+          legallyEntitledCanadaFullTime: eq.legallyEntitledCanadaFullTime || prev.legallyEntitledCanadaFullTime,
+          comfortableVirtualEnvironment: eq.comfortableVirtualEnvironment || prev.comfortableVirtualEnvironment,
+          excitedOffSiteSocial: eq.excitedOffSiteSocial || prev.excitedOffSiteSocial,
+          positionInterest: eq.positionInterest || prev.positionInterest,
+          questionsAboutOpportunity: eq.questionsAboutOpportunity || prev.questionsAboutOpportunity,
+          contactPermission: eq.contactPermission || prev.contactPermission,
+        } : {}),
+      }));
+    } catch (err) {
+      console.error(err);
+      setLoadLookupError('Could not load your record. Please try again.');
+    } finally {
+      setLookupLoading(false);
+    }
   };
 
   const validate = (): boolean => {
@@ -111,6 +157,23 @@ const ExitQuestionnaireForm: React.FC = () => {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Post Live Career Overview Exit Questionnaire</h1>
         <p className="text-gray-600 mb-6">Applicant Questionnaire — please complete all required fields.</p>
+
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6 space-y-3">
+          <p className="text-sm font-medium text-gray-700">Already in our system? Enter your email to load your information.</p>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="email"
+              value={loadEmail}
+              onChange={e => { setLoadEmail(e.target.value); setLoadLookupError(''); }}
+              placeholder="your@email.com"
+              className="flex-1 min-h-[48px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#005EB8] focus:border-[#005EB8] focus:outline-none focus:ring-2"
+            />
+            <Button type="button" variant="outline" onClick={handleLoadByEmail} disabled={lookupLoading}>
+              {lookupLoading ? 'Loading...' : 'Fetch my info'}
+            </Button>
+          </div>
+          {loadLookupError && <p className="text-sm text-amber-700">{loadLookupError}</p>}
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
