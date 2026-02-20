@@ -144,7 +144,7 @@ const ExitQuestionnaireForm: React.FC = () => {
           exitQuestionnaire: payload,
         });
       }
-      navigate('/thank-you');
+      navigate('/thank-you', { state: { fromExitQuestionnaire: true } });
     } catch (err) {
       console.error(err);
       setErrors(prev => ({ ...prev, _form: 'Something went wrong. Please try again.' }));
