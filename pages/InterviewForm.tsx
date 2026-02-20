@@ -5,6 +5,7 @@ import { Button, Input } from '../components/UI';
 import { createCandidate, saveCandidate, getCandidateByEmail, uploadResume } from '../services/storageService';
 import type { ApplicantQuestionnaire } from '../types';
 import { RECEPTION_BACKGROUND_AREAS, DEFAULT_ADMIN_DATA } from '../types';
+import QRCode from 'react-qr-code';
 
 const RECEPTION_STORAGE_KEY = 'reception_candidate_id';
 
@@ -344,6 +345,85 @@ const InterviewForm: React.FC = () => {
           </button>
         </div>
         {loadLookupError && <p className="text-sm text-amber-600 mb-4">{loadLookupError}</p>}
+
+        {/* Post-Interview Completion Status & Assessment Access */}
+        {candidate && candidate.postInterview && candidate.postInterview.ceoInvite === 'yes' && (
+          <div className="mb-6 rounded-lg border border-purple-200 bg-purple-50 p-6 space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                <span className="text-white text-sm font-bold">✓</span>
+              </div>
+              <div className="flex-grow">
+                <h3 className="font-bold text-purple-900 mb-1">Post-Interview Form Completed</h3>
+                <p className="text-sm text-purple-700 mb-3">
+                  Thank you! You have completed the post-interview form and were invited to the Career Overview Session.
+                </p>
+                
+                {candidate.assessment || candidate.status === 'assessment_complete' ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <p className="font-semibold text-green-800 mb-1">✓ Assessment Completed</p>
+                    <p className="text-sm text-green-700">
+                      You have already completed the Leadership & Career Assessment. Our team will review your responses and contact you regarding next steps.
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate('/thank-you')}
+                      className="mt-3"
+                    >
+                      View Thank You Page
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-sm font-semibold text-purple-800 mb-4">
+                      Next Step: Complete the Leadership & Career Assessment
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-white p-4 rounded-lg border border-purple-200">
+                        <p className="text-xs font-semibold text-gray-700 mb-2">Scan this QR code on another device:</p>
+                        <div className="flex justify-center mb-2">
+                          <div className="bg-white p-2 rounded border">
+                            <QRCode 
+                              value={`${typeof window !== 'undefined' ? window.location.origin : ''}/assessment-room/${candidate.id}`}
+                              size={120}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-[10px] text-gray-500 text-center break-all">
+                          {typeof window !== 'undefined' ? window.location.origin : ''}/assessment-room/{candidate.id}
+                        </p>
+                      </div>
+                      
+                      <div className="flex flex-col justify-center">
+                        <Button
+                          fullWidth
+                          onClick={() => navigate(`/assessment-room/${candidate.id}`)}
+                          className="mb-2"
+                        >
+                          Go to Assessment Form
+                        </Button>
+                        <p className="text-xs text-gray-600 text-center">
+                          Or click the button above to start the assessment now
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Show message if post-interview completed but not invited */}
+        {candidate && candidate.postInterview && candidate.postInterview.ceoInvite !== 'yes' && (
+          <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+            <p className="font-medium text-green-800 mb-1">Post-Interview Form Completed</p>
+            <p className="text-sm text-green-700">
+              Thank you for completing the post-interview form. Our team will review your application and contact you regarding next steps.
+            </p>
+          </div>
+        )}
 
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Reception — Pre-Interview</h2>
 

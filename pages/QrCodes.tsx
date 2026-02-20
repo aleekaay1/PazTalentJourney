@@ -63,8 +63,8 @@ const openPrintView = (options: {
 
 const QrCodes: React.FC = () => {
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const arrivalUrl = `${origin}/#/interview`;
-  const assessmentUrl = `${origin}/#/assessment-lookup`;
+  const arrivalUrl = `${origin}/interview`;
+  const assessmentUrl = `${origin}/assessment-lookup`;
 
   const downloadArrivalPdf = useCallback(() => {
     openPrintView({
